@@ -1,30 +1,37 @@
 import java.util.*;
 public class _19_MinimumToRemoveToMakeValidParentheses {
 
-    public static int fun(String s){
+
+    public static String minToRem(String s){
         int n = s.length();
         Stack<Integer> st = new Stack<>();
-        int max_len = 0;
-        st.push(-1);
-        int res = 0;
+        char[] c = s.toCharArray();
         for(int i=0;i<n;i++){
-            char c = s.charAt(i);
-            if(c=='('){
-                st.push(i);
-            }else{
-                st.pop();
-                if(st.isEmpty()) st.push(i);
-                max_len = Math.max(max_len, i-st.peek());
+            if(c[i]=='(') st.push(i);
+            else if(c[i]==')'){
+                if(!st.isEmpty()) st.pop();
+                else c[i] = '*';
             }
+//            for(int k=0;k<n;k++){
+//                System.out.print(c[k]+" ");
+//            }
+//            System.out.println(" ");
         }
-        return n-max_len;
+        while(!st.isEmpty()){
+            c[st.pop()] ='*';
+        }
+        StringBuilder sb = new StringBuilder();
+        for(char ch:c){
+            if(ch != '*') sb.append(ch);
+        }
+        return sb.toString();
     }
 
     public static void main(String[] args){
         Scanner sc = new Scanner(System.in);
 
         String s = sc.nextLine();
-
-        System.out.println("Remove "+fun(s)+" chars to make valid string.");
+        String res = minToRem(s);
+        System.out.println("Valid string is "+res);
     }
 }
